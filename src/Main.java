@@ -3,7 +3,7 @@ public class Main{
 
         System.out.println("================================================");
         System.out.println("Welcome to the Palindrome Checker App");
-        System.out.println("Version: 1.0");
+        System.out.println("Version: 1.1git");
         System.out.println("================================================");
 
         String original = "madam";
