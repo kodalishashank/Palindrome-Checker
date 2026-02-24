@@ -7,20 +7,33 @@ public class Main{
 
         System.out.println("================================================");
         System.out.println("Welcome to the Palindrome Checker App");
-        System.out.println("Version: 3.0");
+        System.out.println("Version: 4.0");
         System.out.println("================================================");
 
         System.out.print("Enter string to check Palindrome: ");
-        String original = scn.nextLine();
-        String reverse = "";
+        String input = scn.nextLine();
+        char[] charArray= input.toCharArray();
+        boolean isPalindrome = true;
 
-        for(int i = original.length() -1; i >=0; i--) reverse += original.charAt(i);
+        int left = 0;
+        int right = charArray.length - 1;
 
-        if (original.equals(reverse)) {
-            System.out.println(original + " is a palindrome");
-        } else {
-            System.out.println(original + " is not a palindrome");
+        while(left < right){
+            if(charArray[left] != charArray[right]){
+                isPalindrome = false;
+                break;
+            }
+            left++;
+            right--;
         }
+
+        if (isPalindrome){
+            System.out.println("\n " + input + " is palindrome");
+        } else {
+            System.out.println("\n " + input + " is not palindrome");
+        }
+
+
         scn.close();
     }
 }
