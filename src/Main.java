@@ -1,4 +1,5 @@
 import java.util.Scanner;
+import java.util.Stack;
 
 public class Main{
     public static void main (String[] args){
@@ -12,25 +13,21 @@ public class Main{
 
         System.out.print("Enter string to check Palindrome: ");
         String input = scn.nextLine();
-        char[] charArray= input.toCharArray();
-        boolean isPalindrome = true;
+        String reversed_input = "";
+        Stack<Character> stack = new Stack<>();
 
-        int left = 0;
-        int right = charArray.length - 1;
-
-        while(left < right){
-            if(charArray[left] != charArray[right]){
-                isPalindrome = false;
-                break;
-            }
-            left++;
-            right--;
+        for (int i = 0; i < input.length(); i++) {
+            stack.push(input.charAt(i));
         }
 
-        if (isPalindrome){
-            System.out.println("\n " + input + " is palindrome");
+        while(!stack.empty()){
+            reversed_input += stack.pop();
+        }
+
+        if (input.equals(reversed_input)){
+            System.out.println(input + " is palindrome");
         } else {
-            System.out.println("\n " + input + " is not palindrome");
+            System.out.println(input + " is not palindrome");
         }
 
 
