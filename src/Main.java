@@ -8,18 +8,20 @@ public class Main {
 
         System.out.println("================================================");
         System.out.println("Welcome to the Palindrome Checker App");
-        System.out.println("Version: 9.0");
+        System.out.println("Version: 10.0");
         System.out.println("================================================");
 
         System.out.print("Enter string to check Palindrome: ");
         String input = scn.nextLine();
 
-        boolean isPalindrome = checkPalindrome(input, 0, input.length() - 1);
+        String normalized = input.replaceAll("\\s+", "").toLowerCase();
+
+        boolean isPalindrome = checkPalindrome(normalized, 0, normalized.length() - 1);
 
         if (isPalindrome) {
-            System.out.println(input + " is palindrome");
+            System.out.println(input + " is palindrome (ignoring spaces and case)");
         } else {
-            System.out.println(input + " is not palindrome");
+            System.out.println(input + " is not palindrome (ignoring spaces and case)");
         }
 
         scn.close();
