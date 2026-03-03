@@ -1,5 +1,3 @@
-import java.util.Deque;
-import java.util.LinkedList;
 import java.util.Scanner;
 
 public class Main {
@@ -10,30 +8,13 @@ public class Main {
 
         System.out.println("================================================");
         System.out.println("Welcome to the Palindrome Checker App");
-        System.out.println("Version: 7.0");
+        System.out.println("Version: 9.0");
         System.out.println("================================================");
 
         System.out.print("Enter string to check Palindrome: ");
         String input = scn.nextLine();
 
-        Deque<Character> deque = new LinkedList<>();
-        boolean isPalindrome = true;
-
-        // Insert characters into Deque
-        for (int i = 0; i < input.length(); i++) {
-            deque.addLast(input.charAt(i));
-        }
-
-        // Compare front and rear
-        while (deque.size() > 1) {
-            char front = deque.removeFirst();
-            char rear = deque.removeLast();
-
-            if (front != rear) {
-                isPalindrome = false;
-                break;
-            }
-        }
+        boolean isPalindrome = checkPalindrome(input, 0, input.length() - 1);
 
         if (isPalindrome) {
             System.out.println(input + " is palindrome");
@@ -42,5 +23,15 @@ public class Main {
         }
 
         scn.close();
+    }
+
+    private static boolean checkPalindrome(String str, int start, int end) {
+        if (start >= end)
+            return true;
+
+        if (str.charAt(start) != str.charAt(end))
+            return false;
+
+        return checkPalindrome(str, start + 1, end - 1);
     }
 }
