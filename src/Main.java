@@ -3,65 +3,6 @@ import java.util.Stack;
 import java.util.Deque;
 import java.util.LinkedList;
 
-interface PalindromeStrategy {
-    boolean check(String input);
-}
-
-class StackStrategy implements PalindromeStrategy {
-
-    public boolean check(String input) {
-
-        String normalized = input.replaceAll("\\s+", "").toLowerCase();
-        Stack<Character> stack = new Stack<>();
-
-        for (int i = 0; i < normalized.length(); i++) {
-            stack.push(normalized.charAt(i));
-        }
-
-        for (int i = 0; i < normalized.length(); i++) {
-            if (normalized.charAt(i) != stack.pop()) {
-                return false;
-            }
-        }
-
-        return true;
-    }
-}
-
-class DequeStrategy implements PalindromeStrategy {
-
-    public boolean check(String input) {
-
-        String normalized = input.replaceAll("\\s+", "").toLowerCase();
-        Deque<Character> deque = new LinkedList<>();
-
-        for (int i = 0; i < normalized.length(); i++) {
-            deque.addLast(normalized.charAt(i));
-        }
-
-        while (deque.size() > 1) {
-            if (!deque.removeFirst().equals(deque.removeLast())) {
-                return false;
-            }
-        }
-
-        return true;
-    }
-}
-
-class PalindromeContext {
-
-    private PalindromeStrategy strategy;
-
-    public void setStrategy(PalindromeStrategy strategy) {
-        this.strategy = strategy;
-    }
-
-    public boolean execute(String input) {
-        return strategy.check(input);
-    }
-}
-
 public class Main {
 
     public static void main(String[] args) {
@@ -70,36 +11,77 @@ public class Main {
 
         System.out.println("================================================");
         System.out.println("Welcome to the Palindrome Checker App");
-        System.out.println("Version: 12.0");
+        System.out.println("Version: 13.0");
         System.out.println("================================================");
-
-        System.out.println("Choose Strategy:");
-        System.out.println("1. Stack Strategy");
-        System.out.println("2. Deque Strategy");
-        System.out.print("Enter choice: ");
-
-        int choice = scn.nextInt();
-        scn.nextLine();
 
         System.out.print("Enter string to check Palindrome: ");
         String input = scn.nextLine();
 
-        PalindromeContext context = new PalindromeContext();
+        String normalized = input.replaceAll("\\s+", "").toLowerCase();
 
-        if (choice == 1) {
-            context.setStrategy(new StackStrategy());
-        } else {
-            context.setStrategy(new DequeStrategy());
-        }
+        long startRecursive = System.nanoTime();
+        boolean recursiveResult = recursiveCheck(normalized, 0, normalized.length() - 1);
+        long endRecursive = System.nanoTime();
 
-        boolean isPalindrome = context.execute(input);
+        long startStack = System.nanoTime();
+        boolean stackResult = stackCheck(normalized);
+        long endStack = System.nanoTime();
 
-        if (isPalindrome) {
-            System.out.println(input + " is palindrome");
-        } else {
-            System.out.println(input + " is not palindrome");
-        }
+        long startDeque = System.nanoTime();
+        boolean dequeResult = dequeCheck(normalized);
+        long endDeque = System.nanoTime();
+
+        System.out.println("------------------------------------------------");
+        System.out.println("Recursive Result: " + recursiveResult);
+        System.out.println("Recursive Time (ns): " + (endRecursive - startRecursive));
+
+        System.out.println("Stack Result: " + stackResult);
+        System.out.println("Stack Time (ns): " + (endStack - startStack));
+
+        System.out.println("Deque Result: " + dequeResult);
+        System.out.println("Deque Time (ns): " + (endDeque - startDeque));
+        System.out.println("------------------------------------------------");
 
         scn.close();
+    }
+
+    private static boolean recursiveCheck(String str, int start, int end) {
+        if (start >= end)
+            return true;
+
+        if (str.charAt(start) != str.charAt(end))
+            return false;
+
+        return recursiveCheck(str, start + 1, end - 1);
+    }
+
+    private static boolean stackCheck(String str) {
+        Stack<Character> stack = new Stack<>();
+
+        for (int i = 0; i < str.length(); i++) {
+            stack.push(str.charAt(i));
+        }
+
+        for (int i = 0; i < str.length(); i++) {
+            if (str.charAt(i) != stack.pop())
+                return false;
+        }
+
+        return true;
+    }
+
+    private static boolean dequeCheck(String str) {
+        Deque<Character> deque = new LinkedList<>();
+
+        for (int i = 0; i < str.length(); i++) {
+            deque.addLast(str.charAt(i));
+        }
+
+        while (deque.size() > 1) {
+            if (!deque.removeFirst().equals(deque.removeLast()))
+                return false;
+        }
+
+        return true;
     }
 }
