@@ -1,8 +1,15 @@
-import java.util.Deque;
-import java.util.LinkedList;
 import java.util.Scanner;
 
 public class Main {
+
+    static class Node {
+        char data;
+        Node next;
+
+        Node(char data) {
+            this.data = data;
+        }
+    }
 
     public static void main(String[] args) {
 
@@ -10,29 +17,52 @@ public class Main {
 
         System.out.println("================================================");
         System.out.println("Welcome to the Palindrome Checker App");
-        System.out.println("Version: 7.0");
+        System.out.println("Version: 8.0");
         System.out.println("================================================");
 
         System.out.print("Enter string to check Palindrome: ");
         String input = scn.nextLine();
 
-        Deque<Character> deque = new LinkedList<>();
-        boolean isPalindrome = true;
+        Node head = null;
+        Node tail = null;
 
-        // Insert characters into Deque
         for (int i = 0; i < input.length(); i++) {
-            deque.addLast(input.charAt(i));
+            Node newNode = new Node(input.charAt(i));
+            if (head == null) {
+                head = newNode;
+                tail = newNode;
+            } else {
+                tail.next = newNode;
+                tail = newNode;
+            }
         }
 
-        // Compare front and rear
-        while (deque.size() > 1) {
-            char front = deque.removeFirst();
-            char rear = deque.removeLast();
+        if (head == null || head.next == null) {
+            System.out.println(input + " is palindrome");
+            scn.close();
+            return;
+        }
 
-            if (front != rear) {
+        Node slow = head;
+        Node fast = head;
+
+        while (fast != null && fast.next != null) {
+            slow = slow.next;
+            fast = fast.next.next;
+        }
+
+        Node secondHalf = reverse(slow);
+        Node firstHalf = head;
+
+        boolean isPalindrome = true;
+
+        while (secondHalf != null) {
+            if (firstHalf.data != secondHalf.data) {
                 isPalindrome = false;
                 break;
             }
+            firstHalf = firstHalf.next;
+            secondHalf = secondHalf.next;
         }
 
         if (isPalindrome) {
@@ -42,5 +72,19 @@ public class Main {
         }
 
         scn.close();
+    }
+
+    private static Node reverse(Node head) {
+        Node prev = null;
+        Node current = head;
+
+        while (current != null) {
+            Node next = current.next;
+            current.next = prev;
+            prev = current;
+            current = next;
+        }
+
+        return prev;
     }
 }
